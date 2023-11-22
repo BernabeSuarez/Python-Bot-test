@@ -21,7 +21,7 @@ async def on_ready():
 
 @bot.command()
 async def hola(ctx):
-    # Saludo con nombre segun el autor del mensaje
+    """Saludo con nombre segun el autor del mensaje"""
     await ctx.send(f"Welcome {ctx.message.author}")
 
 
@@ -35,6 +35,7 @@ async def ayuda(ctx):
 
 @bot.command()
 async def youtube(ctx, *, search):
+    """Busca en youTube y devuelve el primer resultado que aparezca."""
     query_str = parse.urlencode({"search_query": search})
     html_content = request.urlopen("https://www.youtube.com/results?" + query_str)
     search_content = html_content.read().decode()
@@ -42,6 +43,19 @@ async def youtube(ctx, *, search):
     # print(search_result)
 
     await ctx.send("https://www.youtube.com/" + search_result[0])
+
+
+@bot.command()
+async def joined(ctx, member: discord.Member):
+    """Says when a member joined."""
+    await ctx.send(f"{member.name} joined {discord.utils.format_dt(member.joined_at)}")
+
+
+@bot.command()
+async def repeat(ctx, times: int, content="repeating..."):
+    """Repeats a message multiple times."""
+    for i in range(times):
+        await ctx.send(content)
 
 
 bot.run(token)
